@@ -12,7 +12,9 @@ Mini pipeline que simula la recepción de una factura y la registra automáticam
 
 ## Arquitectura
 
+
 ![diagrama del workflow](diagrama.png)
+
 
 ## Cómo probarlo
 
