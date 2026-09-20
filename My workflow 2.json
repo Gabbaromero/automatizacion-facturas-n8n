@@ -1,0 +1,156 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "factura",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -512,
+        -16
+      ],
+      "id": "d0509a88-890b-4d56-be4f-55d690f3a4e8",
+      "name": "Webhook",
+      "webhookId": "06c9f09f-bdee-4429-85e9-eb9131137243"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nreturn items.map(item => {\n  const data = item.json.body; // así llegan los datos del webhook\n\n  if (!data.empresa || !data.monto || !data.fecha_vencimiento) {\n    throw new Error('Faltan campos: empresa, monto o fecha_vencimiento');\n  }\n\n  return {\n    json: {\n      empresa: data.empresa,\n      monto: data.monto,\n      fecha_vencimiento: data.fecha_vencimiento,\n      estado: 'pendiente'\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        -16
+      ],
+      "id": "87371211-733a-4b12-9895-39e942426d28",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1IgjcZ6T7pJQUp9I9aeyolUzf-U_EI66yKRUyt5SpFvc",
+          "mode": "list",
+          "cachedResultName": "FACTURAS-DEMO N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IgjcZ6T7pJQUp9I9aeyolUzf-U_EI66yKRUyt5SpFvc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "FACTURAS-DEMO N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IgjcZ6T7pJQUp9I9aeyolUzf-U_EI66yKRUyt5SpFvc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "EMPRESA": "={{ $json.empresa }}",
+            "MONTO": "={{ $json.monto}}",
+            "FECHA_VENCIMIENTO": "={{ $json.fecha_vencimiento }}",
+            "ESTADO": "={{ $json.estado }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "EMPRESA",
+              "displayName": "EMPRESA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "MONTO",
+              "displayName": "MONTO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FECHA_VENCIMIENTO",
+              "displayName": "FECHA_VENCIMIENTO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ESTADO",
+              "displayName": "ESTADO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "c44b959d-4ba0-4ed3-bbb1-9c9cbf4e3ef3",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5E9laW64rNdiD1P7",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "75c8f5fc-afe2-4b3a-a252-468cbbbd15b9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "44d1f7658c727259b5b5d891fc413cf8c21c43ce4c37462f0226529545cc8269"
+  },
+  "nodeGroups": [],
+  "id": "dkdjXDzeSlcEgl9E",
+  "tags": []
+}
